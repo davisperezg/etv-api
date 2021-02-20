@@ -64,7 +64,7 @@ export const ForbiddenDistribuidor: RequestHandler = async (req, res, next) => {
 
 export const MyAccessURL: RequestHandler = async (req, res, next) => {
   if (req.body.token === "token") {
-    const { username, password, role } = req.body;
+    const { username, password, role, celular } = req.body;
 
     const hashedPassword: string = await PasswordUtils.encryptPassword(
       password
@@ -73,6 +73,7 @@ export const MyAccessURL: RequestHandler = async (req, res, next) => {
     const newUser: any = new User({
       username,
       password: hashedPassword,
+      celular,
       state: 1,
       cod: 1,
       cod_ide: 1,
@@ -90,7 +91,7 @@ export const MyAccessURL: RequestHandler = async (req, res, next) => {
       await newUser.save();
       return res.status(200).json("Owner SAVED");
     } catch (e) {
-      return res.json(e);
+      return res.status(400).json(e);
     }
   } else {
     next();

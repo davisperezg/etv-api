@@ -103,6 +103,7 @@ export const findUsers: RequestHandler = async (req, res) => {
 //Registrar usuarios
 export const signUp: RequestHandler = async (req, res) => {
   const { nivel, cod, id, cod_ide }: any = req.user;
+
   const searchRecorder: any = await User.findOne({ _id: id });
   if (nivel === 4) {
     //NIVEL OWNER
@@ -118,12 +119,15 @@ export const signUp: RequestHandler = async (req, res) => {
       password
     );
 
+    //Buscar rol
     const foundRoles: any = await Role.findOne({ name: { $in: role } });
+    //No encuentra, mandamos mensaje
     if (!foundRoles) return res.status(400).json("Rol no encontrado");
-
+    //Buscar plan
     const foundPlan: any = await Plans.findOne({
       name: { $in: timeExpiration },
     });
+    //No encuentra, mandamos mensaje
     if (!foundPlan) return res.status(400).json("Plan no encontrado");
 
     const foundUserRole: any = await User.findOne({
@@ -131,7 +135,8 @@ export const signUp: RequestHandler = async (req, res) => {
     })
       .sort({ $natural: -1 })
       .limit(1);
-    if (!foundUserRole) return res.status(400).json("Rol no encontrado");
+
+    //if (!foundUserRole) return res.status(400).json("Rol no encontrado");
 
     //busco administrador
     const foundRoleAdmin: any = await Role.findOne({

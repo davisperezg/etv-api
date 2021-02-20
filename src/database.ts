@@ -14,7 +14,7 @@ import config from "./config";
     };
     //+srv to mongoatlas
     const db = await mongoose.connect(
-      `mongodb+srv://${config.MONGO_HOST}/${config.MONGO_DATABASE}`,
+      `mongodb://${config.MONGO_HOST}/${config.MONGO_DATABASE}`,
       mongooseOptions
     );
 
